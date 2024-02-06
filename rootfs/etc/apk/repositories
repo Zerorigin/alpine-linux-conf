@@ -1,0 +1,6 @@
+https://mirrors.ustc.edu.cn/alpine/latest-stable/main
+https://mirrors.ustc.edu.cn/alpine/latest-stable/community
+
+@edge https://mirrors.ustc.edu.cn/alpine/edge/main
+@edgecommunity https://mirrors.ustc.edu.cn/alpine/edge/community
+@testing https://mirrors.ustc.edu.cn/alpine/edge/testing

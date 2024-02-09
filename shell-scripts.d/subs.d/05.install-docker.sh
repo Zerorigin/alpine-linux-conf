@@ -24,7 +24,6 @@ echo "Install docker toolbelts..."
 apk add -q --no-cache -u \
     docker \
     docker-cli-compose \
-    docker-rootless-extras \
     jq openrc openssl
 
 # Modify user
@@ -52,8 +51,10 @@ export JSON_TEXT='''
         "unix:///var/run/docker.sock"
     ],
     "icc": true,
+    "ip-forward": true,
+    "iptables": true,
     "ipv6": false,
-    "live-restore": true,
+    "live-restore": false,
     "log-level": "warn",
     "log-opts": {
         "max-file": "4",
@@ -82,11 +83,14 @@ if [ -z "${DOCKER_ROOTLESS}" ] ||
    [[ -n "${DOCKER_ROOTLESS}" && ${DOCKER_ROOTLESS} -ne 1 ]]; then
     export JSON_LESS=$(jq 'del(."userns-remap")' ${JSON_FILE})
     echo ${JSON_LESS} | jq -S . > ${JSON_FILE}
+    apk del -q docker-rootless-extras
     service docker restart
     exit 0
 fi
 
 echo "Config Docker run with rootless mode..."
+apk add -q --no-cache -u docker-rootless-extras
+
 
 # Modify docker rootless user
 if [ $(getent passwd dockremap | wc -l) -eq 0 ]; then
@@ -98,7 +102,7 @@ if [ $(grep 'dockremap' /etc/subuid | wc -l) -eq 0 ]; then
     echo dockremap:$(grep dockremap /etc/passwd|cut -d: -f3):65536 >> /etc/subuid
 fi
 
-if [ $(grep 'dockremap' /etc/subuid | wc -l) -eq 0 ]; then 
+if [ $(grep 'dockremap' /etc/subgid | wc -l) -eq 0 ]; then 
     echo dockremap:$(grep dockremap /etc/paswwd|cut -d: -f4):65536 >> /etc/subgid
 fi
 
@@ -120,9 +124,11 @@ export JSON_TEXT='''
         "tcp://127.0.0.1:2376",
         "unix:///var/run/docker.sock"
     ],
+    "ip-forward": true,
+    "iptables": true,
     "icc": true,
     "ipv6": false,
-    "live-restore": true,
+    "live-restore": false,
     "log-level": "warn",
     "log-opts": {
         "max-file": "4",

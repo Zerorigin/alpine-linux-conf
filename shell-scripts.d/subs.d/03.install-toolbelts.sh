@@ -3,10 +3,13 @@
 
 echo "Install toolbelts..."
 apk add -q --no-cache -u \
-    ca-certificates ca-certificates-bundle openssl tzdata \
+    busybox-extras tzdata \
+    bridge-utils iproute2 net-tools \
+    ca-certificates ca-certificates-bundle openssl \
     curl wget \
     git mercurial \
     jq yq \
-    helix nano vim
+    helix nano vim \
+    tmux
 
 exit 0

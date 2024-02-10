@@ -3,7 +3,7 @@
 
 echo "Install toolbelts..."
 apk add -q --no-cache -u \
-    busybox-extras tzdata \
+    busybox-extras mimalloc2 tzdata \
     bridge-utils iproute2 net-tools \
     ca-certificates ca-certificates-bundle openssl \
     curl wget \

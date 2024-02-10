@@ -11,6 +11,7 @@ if [ -z "${MODIFY_ROOTFS}" ] ||
     echo "Non-implementation of modifications, early exit..."
 fi
 
+ln -sT /etc/profile.d/color_prompt.sh.disabled /etc/profile.d/color_prompt.sh
 
 chown -R root:root $(realpath $(find ${WORKDIR}/../../rootfs/))
 chmod 0644 $(realpath $(find ${WORKDIR}/../../rootfs/ -type f))
